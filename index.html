@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BIMA WEBSITE | Flutter Roadmap</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cyber: {
+              pink: '#FF2A6D',
+              blue: '#05D9E8',
+              purple: '#D300C5',
+              green: '#00FF85',
+              yellow: '#F9F002'
+            },
+            darkBg: '#0D0221'
+          },
+          fontFamily: {
+            orbitron: ['Orbitron', 'sans-serif'],
+            rajdhani: ['Rajdhani', 'sans-serif']
+          },
+          boxShadow: {
+            'neon-pink': '0 0 10px #FF2A6D, 0 0 20px #FF2A6D, 0 0 40px #FF2A6D',
+            'neon-blue': '0 0 10px #05D9E8, 0 0 20px #05D9E8, 0 0 40px #05D9E8',
+            'neon-purple': '0 0 10px #D300C5, 0 0 20px #D300C5, 0 0 40px #D300C5',
+            'neon-green': '0 0 10px #00FF85, 0 0 20px #00FF85, 0 0 40px #00FF85',
+            'neon-yellow': '0 0 10px #F9F002, 0 0 20px #F9F002, 0 0 40px #F9F002'
+          },
+          animation: {
+            'flicker': 'flicker 3s linear infinite',
+            'text-glow': 'text-glow 1.5s ease-in-out infinite alternate',
+            'scanline': 'scanline 10s linear infinite',
+            'pulse-slow': 'pulse 6s infinite'
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @keyframes flicker {
+      0%, 19.999%, 22%, 62.999%, 64%, 64.999%, 70%, 100% {
+        opacity: 0.99;
+        text-shadow: 0 0 10px currentColor;
+      }
+      20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
+        opacity: 0.4;
+        text-shadow: none;
+      }
+    }
+    
+    @keyframes text-glow {
+      from {
+        text-shadow: 0 0 5px currentColor;
+      }
+      to {
+        text-shadow: 0 0 15px currentColor, 0 0 30px currentColor;
+      }
+    }
+    
+    @keyframes scanline {
+      0% {
+        transform: translateY(0%);
+      }
+      100% {
+        transform: translateY(100vh);
+      }
+    }
+    
+    .cyber-border {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .cyber-border::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      z-index: -1;
+      background: linear-gradient(45deg, #FF2A6D, #05D9E8, #D300C5, #00FF85, #F9F002);
+      background-size: 400%;
+      border-radius: inherit;
+      opacity: 0;
+      transition: 0.5s;
+    }
+    
+    .cyber-border:hover::before {
+      opacity: 1;
+      animation: animate 8s linear infinite;
+      filter: blur(2px);
+    }
+    
+    @keyframes animate {
+      0% {
+        background-position: 0 0;
+      }
+      50% {
+        background-position: 300% 0;
+      }
+      100% {
+        background-position: 0 0;
+      }
+    }
+    
+    .scanlines {
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .scanlines::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(255, 255, 255, 0.05) 50%,
+        transparent 100%
+      );
+      background-size: 100% 8px;
+      pointer-events: none;
+      animation: scanline 6s linear infinite;
+    }
+    
+    .glow-on-hover {
+      transition: all 0.3s ease;
+    }
+    
+    .glow-on-hover:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    
+    .task-item {
+      position: relative;
+      transition: all 0.3s ease;
+    }
+    
+    .task-item:hover {
+      transform: translateX(5px);
+    }
+    
+    .neon-text {
+      animation: text-glow 1.5s ease-in-out infinite alternate;
+    }
+    
+    .neon-pink {
+      color: #FF2A6D;
+      animation-name: text-glow;
+      animation-duration: 2s;
+    }
+    
+    .neon-blue {
+      color: #05D9E8;
+      animation-name: text-glow;
+      animation-duration: 2.5s;
+    }
+    
+    .neon-purple {
+      color: #D300C5;
+      animation-name: text-glow;
+      animation-duration: 3s;
+    }
+    
+    .neon-green {
+      color: #00FF85;
+      animation-name: text-glow;
+      animation-duration: 1.8s;
+    }
+    
+    .neon-yellow {
+      color: #F9F002;
+      animation-name: text-glow;
+      animation-duration: 2.2s;
+    }
+    
+    .grid-pattern {
+      background-image: 
+        linear-gradient(rgba(5, 217, 232, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(5, 217, 232, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    
+    .cyber-checkbox {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #05D9E8;
+      position: relative;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .cyber-checkbox:checked {
+      background-color: #05D9E8;
+      box-shadow: 0 0 10px #05D9E8, 0 0 20px #05D9E8;
+    }
+    
+    .cyber-checkbox:checked::after {
+      content: '✓';
+      position: absolute;
+      color: #0D0221;
+      font-weight: bold;
+      left: 3px;
+      top: -2px;
+    }
+    
+    .progress-ring {
+      transform: rotate(-90deg);
+    }
+    
+    .progress-ring-circle {
+      transition: stroke-dashoffset 0.5s;
+    }
+  </style>
+</head>
+<body class="bg-darkBg text-white font-rajdhani min-h-screen overflow-x-hidden">
+  <!-- Grid background pattern -->
+  <div class="fixed inset-0 grid-pattern opacity-20 pointer-events-none"></div>
+  
+  <!-- Scanline effect -->
+  <div class="fixed inset-0 pointer-events-none" style="background: repeating-linear-gradient(transparent, transparent 1px, rgba(0, 255, 133, 0.05) 2px, transparent 3px);"></div>
+  
+  <div class="relative z-10 min-h-screen flex flex-col items-center px-4 py-8 sm:py-12">
+    <!-- Header with animated title -->
+    <header class="text-center mb-8 sm:mb-12">
+      <h1 class="text-5xl sm:text-6xl font-bold mb-2 font-orbitron neon-text" style="color: #05D9E8;">
+        BIMA<span class="neon-pink">WEBSITE</span>
+      </h1>
+      <p class="text-lg sm:text-xl text-cyber-blue font-medium tracking-wider">
+        FLUTTER DEVELOPMENT ROADMAP
+      </p>
+      
+      <!-- Color theme selector -->
+      <div class="flex justify-center space-x-3 mt-6">
+        <button onclick="changeTheme('pink')" class="w-8 h-8 rounded-full bg-cyber-pink hover:shadow-neon-pink transition-all"></button>
+        <button onclick="changeTheme('blue')" class="w-8 h-8 rounded-full bg-cyber-blue hover:shadow-neon-blue transition-all"></button>
+        <button onclick="changeTheme('purple')" class="w-8 h-8 rounded-full bg-cyber-purple hover:shadow-neon-purple transition-all"></button>
+        <button onclick="changeTheme('green')" class="w-8 h-8 rounded-full bg-cyber-green hover:shadow-neon-green transition-all"></button>
+        <button onclick="changeTheme('yellow')" class="w-8 h-8 rounded-full bg-cyber-yellow hover:shadow-neon-yellow transition-all"></button>
+      </div>
+    </header>
+    
+    <!-- Progress tracker -->
+    <div class="w-full max-w-2xl mb-8 bg-gray-900/80 backdrop-blur-md rounded-xl p-4 border border-cyber-blue/30 cyber-border">
+      <div class="flex items-center justify-between mb-2">
+        <h3 class="text-sm uppercase tracking-widest text-cyber-blue font-semibold">Progress Tracker</h3>
+        <span id="progressText" class="text-cyber-blue font-bold">0%</span>
+      </div>
+      <div class="relative h-3 bg-gray-800 rounded-full overflow-hidden">
+        <div id="progressBar" class="h-full bg-gradient-to-r from-cyber-blue to-cyber-green transition-all duration-500" style="width: 0%"></div>
+      </div>
+    </div>
+    
+    <div class="flex flex-col lg:flex-row w-full max-w-6xl gap-6">
+      <!-- Day Selector -->
+      <div id="daySelector" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 gap-3 w-full lg:w-48">
+        <!-- Generated by JS -->
+      </div>
+      
+      <!-- Todo List Section -->
+      <div id="todoList" class="flex-1 bg-gray-900/80 backdrop-blur-md p-6 rounded-xl border border-cyber-blue/30 cyber-border scanlines">
+        <div class="flex items-center justify-between mb-6">
+          <h2 id="currentDayTitle" class="text-2xl font-bold font-orbitron text-cyber-blue">SELECT A DAY</h2>
+          <div id="dayStats" class="hidden text-sm">
+            <span id="completedTasks" class="text-cyber-green">0</span>
+            <span class="text-gray-400"> / </span>
+            <span id="totalTasks">0</span>
+            <span class="text-gray-400"> tasks</span>
+          </div>
+        </div>
+        
+        <div id="tasksContainer" class="space-y-3">
+          <div class="text-center py-12 text-gray-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4 text-cyber-blue/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            <p>Select a day from the menu to view tasks</p>
+          </div>
+        </div>
+        
+        <div id="dayControls" class="hidden mt-6 flex flex-wrap gap-3">
+          <button id="completeDayBtn" class="px-4 py-2 rounded font-semibold bg-gradient-to-r from-cyber-green to-cyber-blue text-darkBg hover:shadow-neon-green transition-all glow-on-hover">
+            ✅ COMPLETE DAY
+          </button>
+          <button id="resetDayBtn" class="px-4 py-2 rounded font-semibold bg-gradient-to-r from-cyber-pink to-cyber-purple text-white hover:shadow-neon-pink transition-all glow-on-hover">
+            🔁 RESET DAY
+          </button>
+          <button id="addTaskBtn" class="px-4 py-2 rounded font-semibold bg-gray-700 text-white hover:bg-gray-600 transition-all glow-on-hover">
+            ➕ CUSTOM TASK
+          </button>
+        </div>
+      </div>
+      
+      <!-- Achievement panel -->
+      <div id="achievementPanel" class="hidden lg:block w-72 bg-gray-900/80 backdrop-blur-md p-4 rounded-xl border border-cyber-blue/30 cyber-border">
+        <h3 class="text-lg font-bold font-orbitron text-cyber-blue mb-4">ACHIEVEMENTS</h3>
+        <div id="achievementsList" class="space-y-4">
+          <div class="achievement-item opacity-50">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center">
+                🔒
+              </div>
+              <div>
+                <h4 class="font-medium">First Steps</h4>
+                <p class="text-xs text-gray-400">Complete Day 1</p>
+              </div>
+            </div>
+          </div>
+          <!-- More achievements will be added by JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Theme color variable
+    let currentTheme = 'blue';
+    let currentSelectedDay = null;
+    
+    // Roadmap data
+    const roadmap = [
+      { day: 1, tasks: ["Install Flutter SDK & IDE", "Understand Flutter folder structure", "Learn main() and runApp() functions"] },
+      { day: 2, tasks: ["Widget basics: MaterialApp, Scaffold", "Stateless vs Stateful widgets"] },
+      { day: 3, tasks: ["Layout widgets: Row, Column, Stack", "Navigation between pages"] },
+      { day: 4, tasks: ["Practice: Build item list + detail page"] },
+      { day: 5, tasks: ["TextField & Controller", "Form validation"] },
+      { day: 6, tasks: ["Build Login Form with feedback"] },
+      { day: 7, tasks: ["Basic State Management (setState)", "Introduction to Provider"] },
+      { day: 8, tasks: ["Practice: To-do list app", "Theme toggle feature"] },
+      { day: 9, tasks: ["HTTP package & API calls", "JSON parsing"] },
+      { day: 10, tasks: ["Practice: Display data from public API"] },
+    ];
+    
+    // Achievements data
+    const achievements = [
+      { id: 'day1', title: 'First Steps', description: 'Complete Day 1', icon: '🚀', day: 1 },
+      { id: 'day3', title: 'Layout Master', description: 'Complete Day 3', icon: '🧱', day: 3 },
+      { id: 'day5', title: 'Form Wizard', description: 'Complete Day 5', icon: '📝', day: 5 },
+      { id: 'day7', title: 'State Manager', description: 'Complete Day 7', icon: '🔄', day: 7 },
+      { id: 'day10', title: 'API Explorer', description: 'Complete Day 10', icon: '🌐', day: 10 },
+      { id: 'halfway', title: 'Halfway There', description: 'Complete 5 days', icon: '🎯' },
+      { id: 'complete', title: 'Flutter Novice', description: 'Complete all days', icon: '🏆' }
+    ];
+    
+    // DOM elements
+    const selector = document.getElementById("daySelector");
+    const tasksContainer = document.getElementById("tasksContainer");
+    const dayControls = document.getElementById("dayControls");
+    const currentDayTitle = document.getElementById("currentDayTitle");
+    const dayStats = document.getElementById("dayStats");
+    const completedTasksEl = document.getElementById("completedTasks");
+    const totalTasksEl = document.getElementById("totalTasks");
+    const progressBar = document.getElementById("progressBar");
+    const progressText = document.getElementById("progressText");
+    const achievementPanel = document.getElementById("achievementPanel");
+    const achievementsList = document.getElementById("achievementsList");
+    const completeDayBtn = document.getElementById("completeDayBtn");
+    const resetDayBtn = document.getElementById("resetDayBtn");
+    const addTaskBtn = document.getElementById("addTaskBtn");
+    
+    // Initialize the app
+    function init() {
+      renderDayButtons();
+      updateProgress();
+      renderAchievements();
+      setupEventListeners();
+    }
+    
+    // Render day selection buttons
+    function renderDayButtons() {
+      selector.innerHTML = '';
+      
+      roadmap.forEach(({ day }) => {
+        const isComplete = localStorage.getItem(`day${day}-complete`) === "true";
+        const btn = document.createElement("button");
+        
+        btn.innerHTML = `
+          <div class="flex items-center justify-between w-full">
+            <span>DAY ${day}</span>
+            ${isComplete ? '<span class="text-cyber-green">✓</span>' : ''}
+          </div>
+        `;
+        
+        btn.className = `px-4 py-3 rounded-lg font-medium text-left transition-all glow-on-hover ${
+          isComplete 
+            ? 'bg-cyber-green/10 border border-cyber-green/20' 
+            : 'bg-gray-800 hover:bg-gray-700 border border-gray-700'
+        }`;
+        
+        btn.onclick = () => {
+          currentSelectedDay = day;
+          showTasks(day);
+          // Update active button style
+          document.querySelectorAll('#daySelector button').forEach(b => {
+            b.classList.remove('border-cyber-blue', 'bg-gray-700/50');
+          });
+          btn.classList.add('border-cyber-blue', 'bg-gray-700/50');
+        };
+        
+        selector.appendChild(btn);
+      });
+    }
+    
+    // Show tasks for selected day
+    function showTasks(day) {
+      const data = roadmap.find(r => r.day === day);
+      if (!data) return;
+      
+      // Update UI
+      currentDayTitle.textContent = `DAY ${day}`;
+      currentDayTitle.className = `text-2xl font-bold font-orbitron text-cyber-${currentTheme}`;
+      dayStats.classList.remove('hidden');
+      
+      // Show controls
+      dayControls.classList.remove('hidden');
+      
+      // Clear previous tasks
+      tasksContainer.innerHTML = '';
+      
+      // Update task stats
+      let completedCount = 0;
+      
+      // Render tasks
+      data.tasks.forEach((task, idx) => {
+        const id = `day${day}-task${idx}`;
+        const checked = localStorage.getItem(id) === "true";
+        if (checked) completedCount++;
+        
+        const taskEl = document.createElement("div");
+        taskEl.className = `task-item flex items-center gap-3 p-3 rounded-lg bg-gray-800/50 hover:bg-gray-800/70 transition-all border border-gray-700`;
+        
+        taskEl.innerHTML = `
+          <input type="checkbox" id="${id}" ${checked ? 'checked' : ''} 
+            class="cyber-checkbox appearance-none">
+          <label for="${id}" class="flex-1 cursor-pointer ${checked ? 'line-through text-gray-500' : 'text-gray-300'}">
+            ${task}
+          </label>
+          ${checked ? `<span class="text-cyber-green text-sm">DONE</span>` : ''}
+        `;
+        
+        const checkbox = taskEl.querySelector('input');
+        checkbox.onchange = () => {
+          localStorage.setItem(id, checkbox.checked);
+          updateTaskStats(day);
+          if (checkbox.checked) {
+            taskEl.querySelector('label').classList.add('line-through', 'text-gray-500');
+            taskEl.querySelector('label').classList.remove('text-gray-300');
+            const doneSpan = document.createElement('span');
+            doneSpan.className = 'text-cyber-green text-sm';
+            doneSpan.textContent = 'DONE';
+            taskEl.appendChild(doneSpan);
+          } else {
+            taskEl.querySelector('label').classList.remove('line-through', 'text-gray-500');
+            taskEl.querySelector('label').classList.add('text-gray-300');
+            const doneSpan = taskEl.querySelector('.text-cyber-green');
+            if (doneSpan) doneSpan.remove();
+          }
+        };
+        
+        tasksContainer.appendChild(taskEl);
+      });
+      
+      // Update stats
+      completedTasksEl.textContent = completedCount;
+      totalTasksEl.textContent = data.tasks.length;
+      
+      // Set up day controls
+      completeDayBtn.onclick = () => {
+        localStorage.setItem(`day${day}-complete`, "true");
+        // Mark all tasks as complete
+        data.tasks.forEach((_, idx) => {
+          localStorage.setItem(`day${day}-task${idx}`, "true");
+        });
+        updateProgress();
+        renderDayButtons();
+        showTasks(day);
+      };
+      
+      resetDayBtn.onclick = () => {
+        localStorage.removeItem(`day${day}-complete`);
+        // Remove all task completions
+        data.tasks.forEach((_, idx) => {
+          localStorage.removeItem(`day${day}-task${idx}`);
+        });
+        updateProgress();
+        renderDayButtons();
+        showTasks(day);
+      };
+      
+      addTaskBtn.onclick = () => {
+        const newTask = prompt('Enter a custom task for this day:');
+        if (newTask) {
+          data.tasks.push(newTask);
+          showTasks(day);
+        }
+      };
+    }
+    
+    // Update task completion stats
+    function updateTaskStats(day) {
+      const data = roadmap.find(r => r.day === day);
+      let completedCount = 0;
+      
+      data.tasks.forEach((_, idx) => {
+        if (localStorage.getItem(`day${day}-task${idx}`) === "true") {
+          completedCount++;
+        }
+      });
+      
+      completedTasksEl.textContent = completedCount;
+      
+      // Automatically mark day as complete if all tasks are done
+      if (completedCount === data.tasks.length) {
+        localStorage.setItem(`day${day}-complete`, "true");
+        renderDayButtons();
+        updateProgress();
+      }
+    }
+    
+    // Calculate and update overall progress
+    function updateProgress() {
+      let totalTasks = 0;
+      let completedTasks = 0;
+      
+      roadmap.forEach(({ day, tasks }) => {
+        totalTasks += tasks.length;
+        
+        // Check if day is marked complete
+        if (localStorage.getItem(`day${day}-complete`)) {
+          completedTasks += tasks.length;
+        } else {
+          // Count individual completed tasks
+          tasks.forEach((_, idx) => {
+            if (localStorage.getItem(`day${day}-task${idx}`)) {
+              completedTasks++;
+            }
+          });
+        }
+      });
+      
+      const percentage = Math.round((completedTasks / totalTasks) * 100);
+      progressBar.style.width = `${percentage}%`;
+      progressText.textContent = `${percentage}%`;
+      
+      // Update progress bar gradient based on theme
+      progressBar.className = `h-full transition-all duration-500 bg-gradient-to-r from-cyber-${currentTheme} to-cyber-${getComplementaryColor(currentTheme)}`;
+    }
+    
+    // Render achievements
+    function renderAchievements() {
+      achievementsList.innerHTML = '';
+      
+      achievements.forEach(achievement => {
+        const achieved = checkAchievement(achievement);
+        const achievementEl = document.createElement('div');
+        achievementEl.className = `achievement-item ${achieved ? '' : 'opacity-50'}`;
+        
+        achievementEl.innerHTML = `
+          <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded-full ${achieved ? `bg-cyber-${currentTheme}/20` : 'bg-gray-700'} flex items-center justify-center border ${achieved ? `border-cyber-${currentTheme}` : 'border-gray-600'}">
+              ${achievement.icon}
+            </div>
+            <div>
+              <h4 class="font-medium ${achieved ? `text-cyber-${currentTheme}` : 'text-gray-300'}">${achievement.title}</h4>
+              <p class="text-xs ${achieved ? 'text-gray-300' : 'text-gray-500'}">${achievement.description}</p>
+            </div>
+          </div>
+        `;
+        
+        achievementsList.appendChild(achievementEl);
+      });
+      
+      // Show achievement panel if any achievements are unlocked
+      const anyAchieved = achievements.some(checkAchievement);
+      if (anyAchieved) {
+        achievementPanel.classList.remove('hidden');
+      }
+    }
+    
+    // Check if achievement is unlocked
+    function checkAchievement(achievement) {
+      if (achievement.day) {
+        return localStorage.getItem(`day${achievement.day}-complete`) === "true";
+      } else if (achievement.id === 'halfway') {
+        const completedDays = roadmap.filter(day => 
+          localStorage.getItem(`day${day.day}-complete`) === "true"
+        ).length;
+        return completedDays >= 5;
+      } else if (achievement.id === 'complete') {
+        return roadmap.every(day => 
+          localStorage.getItem(`day${day.day}-complete`) === "true"
+        );
+      }
+      return false;
+    }
+    
+    // Change theme color
+    function changeTheme(color) {
+      currentTheme = color;
+      
+      // Update all elements with theme colors
+      document.querySelectorAll('[class*="text-cyber-"]').forEach(el => {
+        const classes = el.className.split(' ');
+        const newClasses = classes.map(cls => {
+          if (cls.startsWith('text-cyber-')) {
+            return `text-cyber-${color}`;
+          }
+          if (cls.startsWith('bg-cyber-')) {
+            return `bg-cyber-${color}`;
+          }
+          if (cls.startsWith('border-cyber-')) {
+            return `border-cyber-${color}`;
+          }
+          if (cls.startsWith('from-cyber-') || cls.startsWith('to-cyber-')) {
+            return cls.replace(/cyber-\w+/g, `cyber-${color}`);
+          }
+          if (cls.startsWith('shadow-neon-')) {
+            return `shadow-neon-${color}`;
+          }
+          return cls;
+        });
+        el.className = newClasses.join(' ');
+      });
+      
+      // Update progress bar with new gradient
+      updateProgress();
+      
+      // Re-render achievements with new colors
+      renderAchievements();
+      
+      // Update current day title if one is selected
+      if (currentSelectedDay) {
+        currentDayTitle.className = `text-2xl font-bold font-orbitron text-cyber-${color}`;
+      }
+    }
+    
+    // Get complementary color for gradients
+    function getComplementaryColor(color) {
+      const complements = {
+        pink: 'purple',
+        blue: 'green',
+        purple: 'pink',
+        green: 'blue',
+        yellow: 'pink'
+      };
+      return complements[color] || 'blue';
+    }
+    
+    // Set up event listeners
+    function setupEventListeners() {
+      // Nothing needed here for now
+    }
+    
+    // Initialize the app
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
